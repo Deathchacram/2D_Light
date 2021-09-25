@@ -71,7 +71,7 @@ Material:
     - _Accuracy: 80
     - _BumpScale: 1
     - _Cutoff: 0.5
-    - _DepthLevel: 1
+    - _DepthLevel: 0.26
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _Elevation: 0

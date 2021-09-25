@@ -95,7 +95,7 @@ Shader "Unlit/ray_traced_isometry"
                     //return col * _Streight * cos(_Elevation);
                     //return fixed4(angle.y + angle.x, angle.y + angle.x, angle.y + angle.x, 1);
                     //return fixed4(angle.y, angle.y, angle.y, 1);
-                    return col;
+                    return col * _Streight;
                     //return a;
                 }
                 ENDCG

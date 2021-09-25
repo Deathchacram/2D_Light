@@ -5,7 +5,7 @@ Shader "Unlit/ray_traced_2D"
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
-        _ObstacleTex("Obstacle", 2D) = "black" {}
+        _ObstacleTex("Support depth", 2D) = "black" {}
         _ObstacleHeightTex("Obstacle", 2D) = "black" {}
         _DepthTex("Depth texture", 2D) = "black" {}
         _ObstacleMul("Obstacle Mul", Float) = 500
@@ -89,28 +89,27 @@ Shader "Unlit/ray_traced_2D"
                 fixed4 col = tex2D(_MainTex, i.uv) * i.col;
                 col.rgb *= col.a;
 
-                //fixed2 t = fixed2(thisPos.x, thisPos.y - tex2D(_DepthTex, thisPos).r * _DepthLevel);
+                fixed2 t = fixed2(thisPos.x, thisPos.y - tex2D(_ObstacleTex, thisPos).r * _DepthLevel);
                 fixed hPos = _Elevation;
                 fixed pos = 1;
                 fixed sub = 1 / _Accuracy;
                 //fixed m = _ObstacleMul * length((thisPos - centerPos) * fixed2(_ScreenParams.x / _ScreenParams.y, 1) * sub);
-                float bol = ceil(saturate(tex2D(_ObstacleHeightTex, thisPos).r * 2 - 1 + 0.1) * saturate(tex2D(_ObstacleHeightTex, thisPos).g * 2 - 1 + 0.1));
-                float count = (1 - tex2D(_ObstacleHeightTex, thisPos).a * bol);
+                float isHeight = (1 - tex2D(_ObstacleHeightTex, thisPos).a);
                 for (int l = 0; l < _Accuracy; l++)
                 {
                     pos -= sub;
                     //col *= saturate(1 - tex2D(_ObstacleTex, lerp(centerPos, thisPos, pos)) * m);
-                    hPos = lerp(_Elevation, tex2D(_DepthTex, thisPos).r, pos);
-                    col *= saturate(ceil(hPos - tex2D(_DepthTex, lerp(centerPos, thisPos, pos)).r));
+                    hPos = lerp(_Elevation, tex2D(_ObstacleTex, thisPos).r, pos);
+                    col *= saturate(ceil(hPos - tex2D(_DepthTex, lerp(centerPos, t, pos)).r));
                 }
-                bol = saturate(tex2D(_ObstacleTex, thisPos).r - tex2D(_DepthTex, thisPos).r);
+                /*fixed bol = saturate(tex2D(_ObstacleTex, thisPos).r - tex2D(_DepthTex, thisPos).r);
                 if (bol > 0)
                 {
                     col = tex2D(_MainTex, i.uv) * i.col;
-                    col.rgb *= col.a;
-                }
+                    col.rgb *= col.a * ceil(saturate(_Elevation - tex2D(_ObstacleTex, thisPos).r));
+                }*/
 
-                return col * _Streight * count;
+                return col * _Streight * isHeight;
                 //return col;
             }
             ENDCG
