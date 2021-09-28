@@ -21,11 +21,7 @@ public class Light2D : MonoBehaviour
         mat.SetTexture("_DepthTex", LightManager.depthTex);
             mat.SetTexture("_ObstacleTex", LightManager.obstTex);
     }
-    void Update()
+    void FixedUpdate()
     {
-        transform.rotation = Quaternion.identity;
-        float deltaX = Input.GetAxisRaw("Horizontal") * Time.deltaTime * speed;
-        float deltay = Input.GetAxisRaw("Vertical") * Time.deltaTime * speed;
-        transform.position += new Vector3(deltaX, deltay, 0);
     }
 }

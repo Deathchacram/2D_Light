@@ -59,20 +59,20 @@ Shader "Unlit/plane_Light"
 
             fixed4 frag(v2f i) : SV_Target
             {
-                fixed sub = 1 / _Accuracy;
-                fixed m = -1;
-                fixed delta = 0;
-                fixed depth = 1;
-                for (int l = 0; l < _Accuracy; l++)
-                {
-                    //fixed a = tex2D(_DepthTex, fixed2(i.uv.x, i.uv.y + (1 - sub * l))).r;
-                    delta = tex2D(_DepthTex, i.uv).r - tex2D(_DepthTex, fixed2(i.uv.x, i.uv.y + _Level * saturate(sub * l))).r;
-                    if (delta < 0)
-                    {
-                        if(sub * l + delta < sub)
-                            depth = 0;
-                    }
-                }
+                //fixed sub = 1 / _Accuracy;
+                //fixed m = -1;
+                //fixed delta = 0;
+                //fixed depth = 1;
+                //for (int l = 0; l < _Accuracy; l++)
+                //{
+                //    //fixed a = tex2D(_DepthTex, fixed2(i.uv.x, i.uv.y + (1 - sub * l))).r;
+                //    delta = tex2D(_DepthTex, i.uv).r - tex2D(_DepthTex, fixed2(i.uv.x, i.uv.y + _Level * saturate(sub * l))).r;
+                //    if (delta < 0)
+                //    {
+                //        if(sub * l + delta < sub)
+                //            depth = 0;
+                //    }
+                //}
                 //fixed delta = tex2D(_DepthTex, i.uv).r - tex2D(_DepthTex, fixed2(i.uv.x, i.uv.y + _Level * (1 - tex2D(_DepthTex, i.uv).r))).r;
 
                //fixed4 light = (depth) * tex2D(_Light, fixed2(i.uv.x, i.uv.y + _Level * (tex2D(_DepthTex, i.uv).r)));

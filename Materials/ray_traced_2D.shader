@@ -94,7 +94,14 @@ Shader "Unlit/ray_traced_2D"
                 fixed pos = 1;
                 fixed sub = 1 / _Accuracy;
                 //fixed m = _ObstacleMul * length((thisPos - centerPos) * fixed2(_ScreenParams.x / _ScreenParams.y, 1) * sub);
-                float isHeight = (1 - tex2D(_ObstacleHeightTex, thisPos).a);
+                fixed4 c = tex2D(_ObstacleHeightTex, thisPos); 
+                float r = c.r + c.g + c.b - 3;
+                float isHeight = 1 - c.a;
+                if (r == 0)
+                {
+                    isHeight = 1;
+                }
+
                 for (int l = 0; l < _Accuracy; l++)
                 {
                     pos -= sub;

@@ -16,8 +16,10 @@ public class LightManager : MonoBehaviour
 
         lightTex = new RenderTexture(Screen.width, Screen.height, 0, RenderTextureFormat.ARGB32);
         lightTex.name = "light_Tex";
+        lightTex.filterMode = FilterMode.Point;
         obstTex = new RenderTexture(Screen.width, Screen.height, 0, RenderTextureFormat.ARGB32);
         obstTex.name = "obstance_Tex";
+        obstTex.filterMode = FilterMode.Point;
 
         GameObject cam = Instantiate(cameraPrefab, transform.position, Quaternion.identity, transform);
         cam.name = "Light camera";
@@ -36,6 +38,7 @@ public class LightManager : MonoBehaviour
         {
             heightObsTex = new RenderTexture(Screen.width, Screen.height, 0, RenderTextureFormat.ARGB32);
             heightObsTex.name = "heightObstance_Tex";
+            heightObsTex.filterMode = FilterMode.Point;
 
             cam = Instantiate(cameraPrefab, transform.position, Quaternion.identity, transform);
             cam.name = "Height obstance camera";
@@ -49,6 +52,7 @@ public class LightManager : MonoBehaviour
         {
             depthTex = new RenderTexture(Screen.width, Screen.height, 0, RenderTextureFormat.ARGB32);
             depthTex.name = "Depth_Tex";
+            depthTex.filterMode = FilterMode.Point;
 
             cam = Instantiate(cameraPrefab, transform.position, Quaternion.identity, transform);
             cam.name = "Depth camera";
@@ -63,7 +67,7 @@ public class LightManager : MonoBehaviour
     }
 
 
-    void Update()
+    void FixedUpdate()
     {
         transform.rotation = Quaternion.identity;
         float deltaX = Input.GetAxisRaw("Horizontal") * Time.deltaTime * 5;

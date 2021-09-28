@@ -92,6 +92,10 @@ Shader "Unlit/ray_traced_isometry"
                     }
                     fixed4 col = a * i.col;
 
+                    fixed4 c = tex2D(_ObstacleHeightTex, thisPos);
+                    float r = c.r + c.g + c.b - 3;
+                    if (r == 0)
+                        col = 0;
                     //return col * _Streight * cos(_Elevation);
                     //return fixed4(angle.y + angle.x, angle.y + angle.x, angle.y + angle.x, 1);
                     //return fixed4(angle.y, angle.y, angle.y, 1);
