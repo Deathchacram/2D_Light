@@ -88,6 +88,7 @@ Shader "Unlit/ray_traced_2D"
                 fixed2 centerPos = i.scrPosCenter;
                 fixed4 col = tex2D(_MainTex, i.uv) * i.col;
                 col.rgb *= col.a;
+                _DepthLevel += _DepthLevel * (_ScreenParams.y / _ScreenParams.x);
 
                 fixed2 t = fixed2(thisPos.x, thisPos.y - tex2D(_ObstacleTex, thisPos).r * _DepthLevel);
                 fixed hPos = _Elevation;

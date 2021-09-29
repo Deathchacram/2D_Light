@@ -1,13 +1,18 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LightManager : MonoBehaviour
 {
+    public Text fps, lvl;
+    public GameObject[] lights, lamps;
     public bool isIsometry, depth;
     public GameObject cameraPrefab;
     public Material postProcess;
     public static RenderTexture lightTex, obstTex, heightObsTex, depthTex;
 
-    Camera cam;
+    private bool lighteSystemEnabled = true, ambientLightEnabled = true, lampsEnabled;
+    private Camera cam;
+    
 
     void Awake()
     {
@@ -67,15 +72,66 @@ public class LightManager : MonoBehaviour
     }
 
 
-    void FixedUpdate()
+    void Update()
     {
-        transform.rotation = Quaternion.identity;
-        float deltaX = Input.GetAxisRaw("Horizontal") * Time.deltaTime * 5;
-        float deltay = Input.GetAxisRaw("Vertical") * Time.deltaTime * 5;
-        transform.position += new Vector3(deltaX, deltay, 0);
+        fps.text = (1 / Time.deltaTime).ToString();
     }
     void OnRenderImage(RenderTexture source, RenderTexture destination)
     {
-        Graphics.Blit(source, destination, postProcess);
+        if (lighteSystemEnabled)
+            Graphics.Blit(source, destination, postProcess);
+        else
+            Graphics.Blit(source, destination);
+    }
+
+    public void LightSystemEnabled()
+    {
+        lighteSystemEnabled = !lighteSystemEnabled;
+    }
+    public void AmbientLightEnabled()
+    {
+        if (ambientLightEnabled)
+        {
+            foreach (GameObject lamp in lights)
+            {
+                lamp.SetActive(false);
+            }
+            postProcess.SetFloat("_AmbientLight", 0);
+        }
+        else
+        {
+            foreach (GameObject lamp in lights)
+            {
+                lamp.SetActive(true);
+            }
+            postProcess.SetFloat("_AmbientLight", 0.25f);
+        }
+
+            ambientLightEnabled = !ambientLightEnabled;
+    }
+
+    public void LampsEnabled()
+    {
+        if (lampsEnabled)
+            foreach (GameObject lamp in lamps)
+            {
+                lamp.SetActive(false);
+            }
+        else
+            foreach (GameObject lamp in lamps)
+            {
+                lamp.SetActive(true);
+            }
+
+        lampsEnabled = !lampsEnabled;
+    }
+    public void ChangeLevel(Scrollbar sb)
+    {
+        foreach (GameObject lamp in lights)
+        {
+            Material mat = lamp.GetComponent<SpriteRenderer>().material;
+            mat.SetFloat("_DepthLevel", sb.value);
+            lvl.text = sb.value.ToString();
+        }
     }
 }
